@@ -30,44 +30,44 @@ To create a new project in STM32CubeMX for the Nucleo-F767 board, start by launc
 4. **Set the core to maximum frequency**:
 	- Adjust the settings in the clock tree to achieve the maximum frequency for the STM32F767 core, which is **216 MHz**.
 
-![Clock Configuration](https://community.st.com/t5/image/serverpage/image-id/101854i5D36A017387F7467/image-size/large/is-moderation-mode/true?v=v2&px=999)
+![Clock Configuration](_htmresc/ClockConfig.png)
 
-![ClockTree](https://community.st.com/t5/image/serverpage/image-id/110321i9FE19E144961A91D/image-size/large/is-moderation-mode/true?v=v2&px=999)
+![ClockTree](_htmresc/ClockTree.png)
 
 In STM32CubeMX, it is recommended to configure a different timebase than SysTick when using FreeRTOS™ to avoid potential conflicts. To do this, navigate to the **"Pinout & Configuration"** tab and select the SYS peripheral. In the Timebase Source dropdown menu, choose a timer other than SysTick. **TIM6** is a suitable option because it is a simple timer with no additional complexity, making it ideal for this purpose.
-![SYS Config](https://community.st.com/t5/image/serverpage/image-id/101853i4FDE3FFEEF785943/image-size/large/is-moderation-mode/true?v=v2&px=999)
+![SYS Config](_htmresc/SysConfig.png)
 
 ### Cortex®-M7 configuration
 ---
 To optimize performance and ensure memory protection, enable **[Instruction Cache (ICACHE)]** and **[Data Cache (DCACHE)]** in STM32CubeMX. Navigate to the **"Cortex-M7"** settings under the **"System Core"** section. Enable the **Memory Protection Unit (MPU)** and set it to **[Background Region Privileged access only + MPU Disabled during hard fault]** mode. Configure the MPU regions as shown in the provided image.
 For example, set "**Region 0"** with a base address of **0x0**, **4GB size**, and access permissions as **ALL ACCESS NOT PERMITTED**. Similarly, configure **Region 1** and **Region 2** with their respective base addresses, sizes, and access permissions. These settings ensure efficient memory management and protection for your application.
 
-![MPU config](https://community.st.com/t5/image/serverpage/image-id/110329i2AC81929DAD0B290/image-size/large/is-moderation-mode/true?v=v2&px=999)
+![MPU config](_htmresc/MPUConfig.png)
 
 ### Ethernet configuration
 ---
 To configure Ethernet for the Nucleo-F767 board in STM32CubeMX, enable the **Ethernet** peripheral in the "**Pinout & Configuration"** tab. Set it to **[RMII mode]**, as this is the mode supported on the board. Next, enable the **[Ethernet interrupt]** and set its **preemption priority** to **[5]**, which is required by **FreeRTOS™** to ensure that its functions can be called from the interrupt handler. Additionally, configure the speed of the Ethernet-related **GPIO pins** to **[Very High]** to support the high-speed data transfer required for Ethernet communication.
-![Ethernet config](https://community.st.com/t5/image/serverpage/image-id/104910i96A64E73E2B776A4/image-dimensions/756x207?v=v2)
+![Ethernet config](_htmresc/EthConfig.png)
 
-![Ethernet GPIO config](https://community.st.com/t5/image/serverpage/image-id/102226i39191ADA0AACC21B/image-dimensions/746x377/is-moderation-mode/true?v=v2)
+![Ethernet GPIO config](_htmresc/EthGPIOConfig.png)
 
 ### FreeRTOS™ configuration
 ---
 To enable **FreeRTOS™** in STM32CubeMX, go to the **Middleware** section and activate **FreeRTOS™** with the **CMSIS_V1 API**. The **CMSIS_V2 API** is not supported for the STM32F7 series. Once enabled, navigate to the **"Tasks and Queues"** tab and locate the **defaultTask**. Increase the **stack size** of the defaultTask to **[512 words]** to ensure sufficient memory allocation for task execution. This adjustment is crucial for handling the application's requirements without running into stack overflow issues.
-![FreeRTOS task config](https://community.st.com/t5/image/serverpage/image-id/110327iBEBDAD3F0975AD96/image-size/large/is-moderation-mode/true?v=v2&px=999)
+![FreeRTOS task config](_htmresc/FreeRTOSConfig.png)
 
 ### LwIP configuration
 ---
 To configure **LwIP** in STM32CubeMX, start by enabling the **LwIP** stack in the **"Middleware"** section. For IP assignment, use **DHCP** to automatically obtain an IP address. If manual configuration is preferred, disable DHCP and assign a static IP address. Next, navigate to the "**Platform Settings"** tab and select **LAN8742** in both dropdown boxes. The **LAN8742** driver is compatible with the **LAN8740** Ethernet PHY device present on the Nucleo-F767 board, ensuring proper Ethernet communication.
-![LwIP platform config](https://community.st.com/t5/image/serverpage/image-id/101846iD1C8F041476BE6D8/image-size/large/is-moderation-mode/true?v=v2&px=999)
+![LwIP platform config](_htmresc/LwIPConfig_Platform.png)
 
 In the **"Key options"** tab, make the following adjustments:
 - Set **MEM_SIZE** to **16*1024** to define the heap size. This heap will later be relocated to **D2 SRAM**.
 - Enable **LWIP_NETIF_LINK_CALLBACK** to detect Ethernet cable plugging and unplugging events.
 - Configure the **LWIP_RAM_HEAP_POINTER** to point to the appropriate memory address in **D2 SRAM** which in our case **0x20078000**.
-![LwIP Memory config](https://community.st.com/t5/image/serverpage/image-id/101858iE375E5B0C39A5C22/image-size/large/is-moderation-mode/true?v=v2&px=999)
+![LwIP Memory config](_htmresc/LwIPConfig.png)
 
-![NetIF link callback](https://community.st.com/t5/image/serverpage/image-id/110375i6C8481C856F48C69/image-size/large/is-moderation-mode/true?v=v2&px=999)
+![NetIF link callback](_htmresc/LwIPNetIFConfig.png)
 These configurations ensure that the LwIP stack is properly set up for Ethernet communication and optimized memory usage.
 ### Code generation
 ---
@@ -133,9 +133,9 @@ The server listens for incoming UDP packets on a specified port, processes the d
 ## Testing the application
 ---
 Compile the code. Using an application or utility like **Packet Sender**, you can test whether the server is successfully receiving UDP test messages. The board can obtain its IP address in two ways: either dynamically from a DHCP server running on the testing computer or network using, for example, Tftpd32, or through a statically defined IP address. In this example, we format a UDP packet to send to port 7 using the IP address, whether it is assigned by the DHCP server or manually configured.
-![demo](https://community.st.com/t5/image/serverpage/image-id/102115i96394A63F86BBD7B/image-size/large/is-moderation-mode/true?v=v2&px=999)
+![demo](_htmresc/Demo1.png)
 After this, you should see that the response echoed back by the UDP server running on the board, confirming that the server is functioning correctly and everything is working as intended.
-![demo](https://community.st.com/t5/image/serverpage/image-id/102120i0CB3979C6505786A/image-size/large/is-moderation-mode/true?v=v2&px=999)
+![demo](_htmresc/Demo2.png)
 ## Conclusion
 ---
 With this information, you can now develop a basic application using DHCP with the LwIP middleware. For more advanced implementations, check out our demonstration projects on GitHub, such as those for the STM32F7 series, or connect with us through the ST community for support.
