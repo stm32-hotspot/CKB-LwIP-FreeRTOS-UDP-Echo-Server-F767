@@ -1,7 +1,7 @@
 # Implementing a LwIP and FreeRTOS™ v1 UDP echo server on the STM32F7 series
 
 ## Introduction
-In this article, we go through the necessary steps to create a working UDP echo server for the STM32F767 MCU. This demo is applicable to other F7 series microcontrollers with some minor differences in memory addresses depending on the model. This resulting project is available on our GitHub STM32 hotspot through this link (hyperlink to be added).
+In this ![guide](https://community.st.com/t5/stm32-mcus/implementing-a-lwip-and-freertos-v1-udp-echo-server-on-the/ta-p/780261), we go through the necessary steps to create a working UDP echo server for the STM32F767 MCU. This demo is applicable to other F7 series microcontrollers with some minor differences in memory addresses depending on the model. This resulting project is available on our GitHub STM32 hotspot through this link (hyperlink to be added).
 ## Prerequisites
 
 **Hardware:**
