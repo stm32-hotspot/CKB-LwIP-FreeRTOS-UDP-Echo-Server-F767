@@ -28,4 +28,4 @@ Here are some useful links to assist with development using the LwIP middleware 
 - [RM0410: STM32F76xxx and STM32F77xxx advanced Arm®-based 32-bit MCUs](https://www.st.com/resource/en/reference_manual/rm0410-stm32f76xxx-and-stm32f77xxx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf "https://www.st.com/resource/en/reference_manual/rm0410-stm32f76xxx-and-stm32f77xxx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf")
 
 ## Troubleshooting
-Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) guide.
+Please refer to the [CONTRIBUTING.MD](CONTRIBUTING.MD) guide.
